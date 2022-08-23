@@ -1,5 +1,5 @@
 import React from 'react';
-import Book from './ui/book';
+import Book from './ui/Book';
 import { books } from '../data'
 
 const Featured = () => {
@@ -16,9 +16,9 @@ const Featured = () => {
                     </h2>
                     <div className="books">
                         {books
-                        .filter((book) => book.rating === 5)
-                        .slice(0,4)
-                        .map((book) => 
+                        .filter((book) => book.rating === 5) //filter through books with 5 stars
+                        .slice(0,4)  //First 4 books with 5 stars
+                        .map((book) =>  //map out the books img,title and content bases on books.jsx
                         <Book book = {book} key = {book.id}/>
                         )}
                     </div>
