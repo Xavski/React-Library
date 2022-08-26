@@ -11,7 +11,33 @@ import Cart from "./pages/Cart";
 function App() {
   const [cart,setCart] = useState([]);
   function addToCart(book){
-    setCart([...cart,book])
+    setCart([...cart,{...book, quantity:1}])
+  }
+
+  function changeQuantity(book,quantity){
+    setCart(cart.map(item =>{
+      if(item.id === book.id){
+        return {
+          ...item, 
+          quantity: +quantity,
+        }
+      }
+      else {
+        return item
+      }
+    }))
+  }
+
+  function removeItem(item){
+    setCart(cart.filter((book) => book.id !== item.id))
+    console.log('removeItem', item)
+  }
+  function numberOfItems(){
+    let counter = 0 
+    cart.forEach(item => {
+      counter += item.quantity
+    })
+    return counter
   }
 
   useEffect(()=> {  //since console.log in function is asyncronous
@@ -20,14 +46,14 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Nav />
+        <Nav numberOfItems = {numberOfItems()}/>
         <Routes>
           <Route path="/" element={<Home/>} />
           {/* exact where path cannot be altered and output same page */}
           <Route path="/books" element={<Books books={books} />} />
           {/* send props to route */}
           <Route path="/books/:id" element={<BookInfo books={books} addToCart = {addToCart} cart={cart}/>} />
-          <Route path="/cart" element={<Cart books={books}/>}/>
+          <Route path="/cart" element={<Cart books={books} cart = {cart} changeQuantity = {changeQuantity} removeItem = {removeItem}/> }/>
         </Routes>
         <Footer />
       </div>
